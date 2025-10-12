@@ -1,15 +1,110 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum FeedbackKind {
+  INCIDENT   // incidencias: bus lleno, accidente, retraso...
+  SUGGESTION // sugerencias/mejoras
+}
+
+enum FeedbackStatus {
+  PUBLISHED
+  UNDER_REVIEW
+  REJECTED
+  RESOLVED
+}
+
+model User {
+  id         String     @id @default(cuid())
+  email      String     @unique
+  password   String
+  fullName   String?
+  reports    Feedback[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model City {
+  id        String   @id @default(cuid())
+  name      String
+  routes    Route[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Route {
+  id        String     @id @default(cuid())
+  code      String     @unique
+  name      String
+  color     String?
+  cityId    String
+  city      City       @relation(fields: [cityId], references: [id])
+  stops     Stop[]
+  schedules Schedule[]
+  reports   Feedback[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([cityId])
+}
+
+model Stop {
+  id        String   @id @default(cuid())
+  name      String
+  latitude  Float
+  longitude Float
+  order     Int
+  routeId   String
+  route     Route    @relation(fields: [routeId], references: [id])
+  reports   Feedback[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([routeId, order])
+}
+
+model Schedule {
+  id        String   @id @default(cuid())
+  dayOfWeek String   // “Lunes”, “Martes” (luego se puede enum)
+  firstBus  String   // "05:00"
+  lastBus   String   // "22:00"
+  frequency Int      // minutos
+  routeId   String
+  route     Route    @relation(fields: [routeId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([routeId, dayOfWeek])
+}
+
+model Feedback {
+  id         String         @id @default(cuid())
+  kind       FeedbackKind   @default(INCIDENT)
+  category   String         // "bus_lleno", "accidente", "retraso" (luego enum)
+  comment    String?
+  latitude   Float?
+  longitude  Float?
+
+  userId     String?
+  user       User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  routeId    String?
+  route      Route?         @relation(fields: [routeId], references: [id], onDelete: SetNull)
+
+  stopId     String?
+  stop       Stop?          @relation(fields: [stopId], references: [id], onDelete: SetNull)
+
+  status     FeedbackStatus @default(UNDER_REVIEW)
+  upvotes    Int            @default(0)
+
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@index([routeId, stopId, kind, status])
+  @@index([createdAt])
 }
