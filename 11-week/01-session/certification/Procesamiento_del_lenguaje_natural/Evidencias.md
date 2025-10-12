@@ -9,3 +9,20 @@
 ## QUIZ 
 
 ![QUIZ](./img/2.jpg)
+
+## QUIZ 
+
+![QUIZ](./img/3.jpg)
+
+## QUIZ 
+
+![QUIZ](./img/4.jpg)
+
+## QUIZ 
+
+![QUIZ](./img/5.jpg)
+
+## EXAM 
+
+![EXAM](./img/6.jpg)
+
