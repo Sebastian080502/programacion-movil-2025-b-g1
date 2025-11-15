@@ -1,38 +1,37 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { FeedbackService } from './feedback.service';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { FeedbackService } from './feedbacke.service';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
 import { UpdateFeedbackDto } from './dto/update-feedback.dto';
-import { ModerateFeedbackDto } from './dto/moderate-feedback.dto';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('feedback')
 export class FeedbackController {
-  constructor(private readonly service: FeedbackService) {}
+  constructor(private service: FeedbackService) {}
 
-  // crear reporte (autenticado recomendado; si quieres anónimo, quita el guard)
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  create(@Req() req: any, @Body() dto: CreateFeedbackDto) {
-    return this.service.create(req.user?.userId ?? null, dto);
+  @Post() 
+  create(@Body() dto: CreateFeedbackDto) { 
+    return this.service.create(dto); 
+
   }
+  @Get() 
+  findAll() { 
+    return this.service.findAll(); 
 
-  @Get()
-  list(@Query('routeId') routeId?: string, @Query('stopId') stopId?: string) {
-    return this.service.list(routeId, stopId);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateFeedbackDto) {
-    return this.service.update(id, dto);
+  @Get(':id') 
+  findOne(@Param('id') id: string) { 
+    return this.service.findOne(id); 
+    
   }
+  @Patch(':id') 
+  update(@Param('id') id: string, @Body() dto: UpdateFeedbackDto) { 
+    return this.service.update(id, dto); 
 
-  @Patch(':id/status')
-  moderate(@Param('id') id: string, @Body() dto: ModerateFeedbackDto) {
-    return this.service.moderate(id, dto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.service.remove(id);
+  @Delete(':id') 
+  remove(@Param('id') id: string) { 
+    return this.service.remove(id); 
+    
   }
 }

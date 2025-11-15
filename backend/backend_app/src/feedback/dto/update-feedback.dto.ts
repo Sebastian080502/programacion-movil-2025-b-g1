@@ -1,3 +1,19 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateFeedbackDto } from './create-feedback.dto';
-export class UpdateFeedbackDto extends PartialType(CreateFeedbackDto) {}
+import { IsOptional, IsString } from 'class-validator';
+
+export class UpdateFeedbackDto {
+  @IsOptional()
+  @IsString()
+  routeId?: string;
+
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @IsOptional()
+  @IsString()
+  body?: string;
+
+  @IsOptional()
+  @IsString()
+  createdBy?: string;
+}

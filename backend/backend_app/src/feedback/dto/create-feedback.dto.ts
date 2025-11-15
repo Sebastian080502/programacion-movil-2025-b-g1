@@ -1,21 +1,11 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { FeedbackKind } from '@prisma/client';
-
+import { IsOptional, IsString } from 'class-validator';
 export class CreateFeedbackDto {
-  @IsEnum(FeedbackKind) 
-  kind: FeedbackKind;          // INCIDENT | SUGGESTION
   @IsString() 
-  category: string;                      // "bus_lleno" | "accidente" | ...
+  routeId: string;
+  @IsString() 
+  title: string;
   @IsOptional() @IsString() 
-  comment?: string;
-
-  @IsOptional() @IsNumber() 
-  latitude?: number;
-  @IsOptional() @IsNumber() 
-  longitude?: number;
-
+  body?: string;
   @IsOptional() @IsString() 
-  routeId?: string;
-  @IsOptional() @IsString() 
-  stopId?: string;
+  createdBy?: string;
 }

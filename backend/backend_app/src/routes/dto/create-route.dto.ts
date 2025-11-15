@@ -4,8 +4,8 @@ export class CreateRouteDto {
   code: string;
   @IsString() 
   name: string;
-  @IsOptional() @IsString() 
-  color?: string;
   @IsString() 
   cityId: string;
+  @IsOptional() @IsString() 
+  desc?: string;
 }

@@ -1,3 +1,13 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateStopDto } from './create-stop.dto';
-export class UpdateStopDto extends PartialType(CreateStopDto) {}
+import { IsInt, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+export class UpdateStopDto {
+  @IsOptional() @IsString() 
+  routeId?: string;
+  @IsOptional() @IsInt() @Min(1) 
+  orderNo?: number;
+  @IsOptional() @IsString() 
+  name?: string;
+  @IsOptional() @IsNumber() 
+  lat?: number;
+  @IsOptional() @IsNumber() 
+  lng?: number;
+}

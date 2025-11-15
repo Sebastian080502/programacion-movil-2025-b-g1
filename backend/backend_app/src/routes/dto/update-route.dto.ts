@@ -1,3 +1,11 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateRouteDto } from './create-route.dto';
-export class UpdateRouteDto extends PartialType(CreateRouteDto) {}
+import { IsOptional, IsString } from 'class-validator';
+export class UpdateRouteDto {
+  @IsOptional() @IsString() 
+  code?: string;
+  @IsOptional() @IsString() 
+  name?: string;
+  @IsOptional() @IsString() 
+  cityId?: string;
+  @IsOptional() @IsString() 
+  desc?: string;
+}

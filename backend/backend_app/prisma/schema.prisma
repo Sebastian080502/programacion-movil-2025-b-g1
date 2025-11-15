@@ -3,108 +3,63 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql" // o "mysql"
   url      = env("DATABASE_URL")
 }
 
-enum FeedbackKind {
-  INCIDENT   // incidencias: bus lleno, accidente, retraso...
-  SUGGESTION // sugerencias/mejoras
-}
-
-enum FeedbackStatus {
-  PUBLISHED
-  UNDER_REVIEW
-  REJECTED
-  RESOLVED
-}
-
 model User {
-  id         String     @id @default(cuid())
-  email      String     @unique
-  password   String
-  fullName   String?
-  reports    Feedback[]
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
 }
 
 model City {
-  id        String   @id @default(cuid())
-  name      String
-  routes    Route[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id   String @id @default(cuid())
+  name String  @unique
+  @@index([name])
 }
 
 model Route {
-  id        String     @id @default(cuid())
-  code      String     @unique
+  id        String @id @default(cuid())
+  code      String @unique
   name      String
-  color     String?
-  cityId    String
-  city      City       @relation(fields: [cityId], references: [id])
-  stops     Stop[]
-  schedules Schedule[]
-  reports   Feedback[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-
+  cityId    String          // FK lógica a City
+  desc      String?
   @@index([cityId])
+  @@index([code])
+  @@index([name])
 }
 
 model Stop {
-  id        String   @id @default(cuid())
-  name      String
-  latitude  Float
-  longitude Float
-  order     Int
-  routeId   String
-  route     Route    @relation(fields: [routeId], references: [id])
-  reports   Feedback[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([routeId, order])
+  id       String  @id @default(cuid())
+  routeId  String  // FK lógica a Route
+  orderNo  Int
+  name     String
+  lat      Float?
+  lng      Float?
+  @@index([routeId])
+  @@index([orderNo])
 }
 
 model Schedule {
-  id        String   @id @default(cuid())
-  dayOfWeek String   // “Lunes”, “Martes” (luego se puede enum)
-  firstBus  String   // "05:00"
-  lastBus   String   // "22:00"
-  frequency Int      // minutos
-  routeId   String
-  route     Route    @relation(fields: [routeId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([routeId, dayOfWeek])
+  id           String @id @default(cuid())
+  routeId      String // FK lógica a Route
+  dayOfWeek    Int    // 0..6  (Dom..Sáb)
+  startTime    String // "05:00"
+  endTime      String // "22:00"
+  frequencyMin Int    // cada n minutos
+  @@index([routeId])
+  @@index([dayOfWeek])
 }
 
 model Feedback {
-  id         String         @id @default(cuid())
-  kind       FeedbackKind   @default(INCIDENT)
-  category   String         // "bus_lleno", "accidente", "retraso" (luego enum)
-  comment    String?
-  latitude   Float?
-  longitude  Float?
-
-  userId     String?
-  user       User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-  routeId    String?
-  route      Route?         @relation(fields: [routeId], references: [id], onDelete: SetNull)
-
-  stopId     String?
-  stop       Stop?          @relation(fields: [stopId], references: [id], onDelete: SetNull)
-
-  status     FeedbackStatus @default(UNDER_REVIEW)
-  upvotes    Int            @default(0)
-
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-
-  @@index([routeId, stopId, kind, status])
+  id        String   @id @default(cuid())
+  routeId   String   // FK lógica a Route
+  title     String
+  body      String?
+  createdAt DateTime @default(now())
+  createdBy String?  // userId o texto libre
+  @@index([routeId])
   @@index([createdAt])
 }

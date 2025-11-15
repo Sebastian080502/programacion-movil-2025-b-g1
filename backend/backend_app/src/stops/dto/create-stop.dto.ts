@@ -1,13 +1,13 @@
-import { IsNumber, IsString, Min } from 'class-validator';
+import { IsInt, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 export class CreateStopDto {
   @IsString() 
-  name: string;
-  @IsNumber() 
-  latitude: number;
-  @IsNumber() 
-  longitude: number;
-  @IsNumber() @Min(0) 
-  order: number;
-  @IsString() 
   routeId: string;
+  @IsInt() @Min(1) 
+  orderNo: number;
+  @IsString() 
+  name: string;
+  @IsOptional() @IsNumber() 
+  lat?: number;
+  @IsOptional() @IsNumber() 
+  lng?: number;
 }

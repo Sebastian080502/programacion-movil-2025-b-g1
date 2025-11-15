@@ -1,33 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Prisma, Feedback } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
 import { UpdateFeedbackDto } from './dto/update-feedback.dto';
-import { ModerateFeedbackDto } from './dto/moderate-feedback.dto';
 
 @Injectable()
 export class FeedbackService {
   constructor(private prisma: PrismaService) {}
 
-  create(userId: string | null, dto: CreateFeedbackDto) {
-    return this.prisma.feedback.create({
-      data: { ...dto, userId },
-    });
+  create(dto: CreateFeedbackDto): Promise<Feedback> {
+    const data: Prisma.FeedbackCreateInput = {
+      routeId: dto.routeId,
+      title: dto.title,
+      body: dto.body,
+      createdBy: dto.createdBy,
+
+    };
+    return this.prisma.feedback.create({ data });
   }
 
-  list(routeId?: string, stopId?: string) {
+  findAll(): Promise<Feedback[]> {
     return this.prisma.feedback.findMany({
-      where: { routeId: routeId || undefined, stopId: stopId || undefined },
       orderBy: { createdAt: 'desc' },
     });
   }
 
-  update(id: string, dto: UpdateFeedbackDto) {
-    return this.prisma.feedback.update({ where: { id }, data: dto });
+  async findOne(id: string): Promise<Feedback> {
+    const fb = await this.prisma.feedback.findUnique({ where: { id } });
+    if (!fb) throw new NotFoundException('Feedback no encontrado');
+    return fb;
   }
 
-  moderate(id: string, dto: ModerateFeedbackDto) {
-    return this.prisma.feedback.update({ where: { id }, data: { status: dto.status } });
+  update(id: string, dto: UpdateFeedbackDto): Promise<Feedback> {
+    const data: Prisma.FeedbackUpdateInput = {
+      routeId: dto.routeId,
+      title: dto.title,
+      body: dto.body,
+      createdBy: dto.createdBy,
+    };
+    return this.prisma.feedback.update({ where: { id }, data });
   }
 
-  remove(id: string) { return this.prisma.feedback.delete({ where: { id } }); }
+  remove(id: string): Promise<Feedback> {
+    return this.prisma.feedback.delete({ where: { id } });
+  }
 }

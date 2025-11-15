@@ -1,25 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateRouteDto } from './dto/create-route.dto';
-import { UpdateRouteDto } from './dto/update-route.dto';
 
 @Injectable()
 export class RoutesService {
   constructor(private prisma: PrismaService) {}
 
-  create(dto: CreateRouteDto) { return this.prisma.route.create({ data: dto }); }
-  findAll() { 
-    return this.prisma.route.findMany({
-      include: { city: true },
-      orderBy: { code: 'asc' },
-    }); 
+  create(data: { code: string; name: string; cityId: string; desc?: string }) {
+    return this.prisma.route.create({ data });
   }
-  findOne(id: string) {
-    return this.prisma.route.findUnique({
-      where: { id },
-      include: { city: true, stops: true, schedules: true },
-    });
+
+  findAll() {
+    return this.prisma.route.findMany({ 
+      orderBy: 
+      [{ name: 
+        'asc' }] 
+      });
   }
-  update(id: string, dto: UpdateRouteDto) { return this.prisma.route.update({ where: { id }, data: dto }); }
-  remove(id: string) { return this.prisma.route.delete({ where: { id } }); }
+
+  async findOne(id: string) {
+    const r = await this.prisma.route.findUnique({ 
+      where: { id } });
+    if (!r) throw new NotFoundException('Ruta no encontrada');
+    return r;
+  }
+
+  update(id: string, data: { code?: string; name?: string; cityId?: string; desc?: string }) {
+    return this.prisma.route.update({ 
+      where: { id }, data });
+  }
+
+  remove(id: string) {
+    return this.prisma.route.delete({ 
+      where: { id } });
+  }
 }

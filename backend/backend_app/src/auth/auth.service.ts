@@ -1,43 +1,47 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
+import { JwtPayload } from './dto/jwt-payload';
 
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService, private jwt: JwtService) {}
 
-  async register(dto: RegisterDto) {
-    const exists = await this.prisma.user.findUnique({ where: { email: dto.email }});
-    if (exists) throw new BadRequestException('El correo ya está registrado');
+  // Registro de usuario
+  async register(email: string, password: string) {
+    const exists = await this.prisma.user.findUnique({ where: { email } });
+    if (exists) throw new BadRequestException('El usuario ya existe');
 
-    const hash = await bcrypt.hash(dto.password, 10);
+    const hashed = await bcrypt.hash(password, 10);
     const user = await this.prisma.user.create({
-      data: { email: dto.email, password: hash, fullName: dto.fullName ?? null },
-      select: { id: true, email: true, fullName: true, createdAt: true, updatedAt: true },
+      data: { email, passwordHash: hashed },
     });
-    return user;
+
+    return {
+      message: 'Usuario registrado exitosamente',
+      user: { id: user.id, email: user.email },
+    };
   }
 
-  async login(dto: LoginDto) {
-    const user = await this.prisma.user.findUnique({ where: { email: dto.email }});
+  // Inicio de sesión
+  async login(email: string, password: string) {
+    const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) throw new UnauthorizedException('Credenciales inválidas');
 
-    const ok = await bcrypt.compare(dto.password, user.password);
-    if (!ok) throw new UnauthorizedException('Credenciales inválidas');
+    const valid = await bcrypt.compare(password, user.passwordHash);
+    if (!valid) throw new UnauthorizedException('Credenciales inválidas');
 
     const payload = { sub: user.id, email: user.email };
-    const access_token = await this.jwt.signAsync(payload);
-    const { password: _pw, ...userWithoutPassword } = user;
-    return { access_token, user: userWithoutPassword };
+    const token = await this.jwt.signAsync(payload);
+
+    return { access_token: token };
   }
 
-  async me(userId: string) {
-    return this.prisma.user.findUnique({
-      where: { id: userId },
-      select: { id: true, email: true, fullName: true, createdAt: true, updatedAt: true },
-    });
+  // Validación de token
+  async validateUser(payload: JwtPayload) {
+    const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
+    if (!user) throw new UnauthorizedException('Usuario no encontrado');
+    return { id: user.id, email: user.email }; // devuelve datos seguros
   }
 }
