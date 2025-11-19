@@ -1,4 +1,3 @@
-// src/hooks/useFetch.ts
 import { useEffect, useState, DependencyList } from "react";
 
 export const useFetch = <T,>(

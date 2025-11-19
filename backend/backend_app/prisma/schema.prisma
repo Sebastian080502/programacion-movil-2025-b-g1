@@ -13,6 +13,17 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
 }
+model PasswordReset {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  @@index([email, code])
+}
+
 
 model City {
   id   String @id @default(cuid())

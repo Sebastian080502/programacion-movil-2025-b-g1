@@ -1,17 +1,18 @@
-/* Aplicar tipografía global */
+/* =================== ESTILO GLOBAL =================== */
+
+/* Tipografía y fondo por defecto (modo claro) */
 body {
   font-family: var(--app-font-family);
-  background: #0f172a;
-  background: radial-gradient(circle at top, #1e293b, #020617);
-  color: #0f172a;
+  background: var(--app-bg);
+  color: var(--app-text-primary);
 }
 
-/* Contenido principal */
+/* Por defecto, que ion-content tenga el mismo fondo que la app */
 ion-content {
-  --background: transparent;
+  --background: var(--app-bg);
 }
 
-/* Tarjetas principales */
+/* Tarjetas reutilizables */
 .app-card {
   background: #ffffff;
   border-radius: var(--app-radius-lg);
@@ -19,7 +20,7 @@ ion-content {
   padding: 16px;
 }
 
-/* Títulos */
+/* Títulos globales */
 .app-title {
   font-size: 1.4rem;
   font-weight: 700;
@@ -27,13 +28,13 @@ ion-content {
   letter-spacing: 0.02em;
 }
 
-/* Subtítulos */
+/* Subtítulos globales */
 .app-subtitle {
   font-size: 0.95rem;
   color: #64748b;
 }
 
-/* Botones principales */
+/* Botones principales “App” */
 ion-button.app-primary {
   --border-radius: 999px;
   --box-shadow: 0 10px 20px rgba(37, 99, 235, 0.35);
@@ -41,7 +42,7 @@ ion-button.app-primary {
   font-weight: 600;
 }
 
-/* Inputs */
+/* Inputs generales */
 ion-item.app-input-item {
   --background: #f8fafc;
   --border-radius: var(--app-radius-md);
@@ -56,7 +57,7 @@ ion-textarea {
   --padding-end: 12px;
 }
 
-/* Pequeñas animaciones al hover */
+/* Pequeña animación hover en tarjetas (web) */
 ion-card:hover,
 .app-card:hover {
   transform: translateY(-2px);
@@ -64,12 +65,314 @@ ion-card:hover,
   transition: all 0.18s ease-out;
 }
 
-/* Listas */
+/* Listas sin fondo sólido */
 ion-list {
   background: transparent;
 }
 
-/* Quitar bordes feos por defecto en algunos items */
+/* Quitar borde por defecto de ion-item */
 ion-item {
   --border-color: transparent;
+}
+
+/* =================== HOME MAP (tema oscuro) =================== */
+
+.home-map-card {
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
+}
+
+.home-map-container {
+  height: 260px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #020617, #111827);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 14px;
+  border: 1px solid #38dbf8;
+}
+
+/* =================== LOGIN (FIGMA CLARO) =================== */
+
+/* Página de login en modo Figma blanco */
+.login-light {
+  --ion-background-color: #ffffff;
+  --background: #ffffff;
+  background: #ffffff;
+
+  /* 👇 Fuerza colores de texto oscuros, ignorando el tema oscuro global */
+  --ion-text-color: #111827;
+  --ion-text-color-step-400: #111827;
+  --ion-text-color-step-500: #111827;
+
+  color: #111827;
+}
+
+/* Contenedor centrado del login */
+.login-wrapper {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabecera */
+.login-header {
+  text-align: center;
+  margin-top: 16px;
+}
+
+/* Título “C10NA” */
+.login-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 40px 0 8px;
+  color: var(--app-text-primary);
+}
+
+/* Subtítulo “Iniciar sesión” */
+.login-subtitle {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 24px;
+  color: var(--app-text-secondary);
+}
+
+/* Bloque de inputs y botones */
+.login-card {
+  margin-top: 8px;
+}
+
+/* Contenedores usados por AppInput */
+.app-input-container {
+  margin-bottom: 18px;
+}
+
+.app-input-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;    /* antes era var(--app-text-primary), igual pero explícito */
+  margin-bottom: 6px;
+}
+
+.app-input-body {
+  background: var(--app-input-bg);
+  border: 1px solid var(--app-input-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+
+  /* 👇 Fuerza color de texto y placeholder del IonInput */
+  --color: #111827;                /* texto que escribe el usuario */
+  --placeholder-color: #111827;       /* texto del placeholder */
+  --placeholder-opacity: 1;
+}
+
+/* Botón “Iniciar sesión” (gris claro, redondeado) */
+.btn-login-light {
+  margin-top: 14px;
+  --border-radius: 16px;
+  --background: var(--app-button-bg);
+  --color: #000;
+  font-weight: 600;
+}
+
+/* Fila: Recordarme + Olvidaste tu contraseña */
+.login-options {
+  align-items: center;
+  margin-top: 12px;
+
+}
+
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.login-forgot {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 13px;
+}
+
+/* Divider con líneas y punto central */
+.login-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0 8px;
+  gap: 6px;
+}
+
+.login-divider .line {
+  flex: 1;
+  height: 1px;
+  background-color: #e5e7eb;
+}
+
+.login-divider .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #9ca3af;
+}
+
+/* Texto de registro */
+.login-register {
+  text-align: center;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+/* Texto de términos */
+.login-terms {
+  margin-top: 12px;
+  font-size: 11px;
+  color: #6b7280;
+  text-align: center;
+}
+
+/* =================== LINKS =================== */
+
+.link-button,
+.link-button-strong {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.link-button {
+  color: var(--app-link);
+  text-decoration: underline;
+}
+
+.link-button-strong {
+  color: var(--app-link);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.link-inline {
+  color: var(--app-link);
+  font-weight: 500;
+  text-decoration: underline;
+}
+/* =================== HOME RUTAS (pantalla tipo iOS con mapa) =================== */
+
+.routes-content {
+  --background: var(--app-bg);
+}
+
+.routes-toolbar {
+  --background: #ffffff;
+  --border-color: transparent;
+  box-shadow: none;
+  padding-inline: 12px;
+}
+
+.routes-toolbar ion-button {
+  --color: #0f172a;
+  font-size: 24px;
+}
+
+/* “Hola, juan12” */
+.routes-header-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #000000;
+}
+
+.routes-username {
+  color: #000000; /* quita el azul de enlace */
+}
+
+/* Contenedor principal */
+.routes-body {
+  padding: 16px;
+}
+
+/* Texto ¿A dónde quieres ir? */
+.routes-question {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+/* Inputs redondeados estilo iOS (sin línea azul) */
+.routes-input {
+  --background: #f3f4f6;
+  --color: #111827;
+  --placeholder-color: #9ca3af;
+  --placeholder-opacity: 1;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --border-radius: 999px;
+  --border-width: 0;
+  --highlight-height: 0;
+
+  background: #f3f4f6;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  margin-top: 10px;
+  padding: 8px 16px;
+}
+
+/* Por si el navegador insiste con la línea/outline */
+.routes-input input,
+.routes-input .native-input {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Contenedor del mapa como imagen grande */
+.routes-map-container {
+  width: 100%;
+  height: 60vh;
+  margin-top: 18px;
+  border-radius: var(--app-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--app-shadow-soft);
+  background: #d1d5db;
+}
+
+.routes-map-container iframe,
+.routes-map-container > div {
+  width: 100%;
+  height: 100%;
+}
+
+/* Barra de navegación inferior */
+.routes-bottom-nav {
+  --background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+.routes-nav-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0 12px;
+}
+
+.routes-nav-bar button {
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  color: #94a3b8;
+}
+
+.routes-nav-bar button.active {
+  color: var(--ion-color-primary);
 }

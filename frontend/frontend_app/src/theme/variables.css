@@ -1,5 +1,5 @@
 :root {
-  /** Colores principales **/
+  /** Colores principales Ionic **/
   --ion-color-primary: #2563eb;        /* Azul principal */
   --ion-color-primary-rgb: 37, 99, 235;
   --ion-color-primary-contrast: #ffffff;
@@ -37,9 +37,18 @@
   --app-radius-lg: 18px;
 
   --app-shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.08);
+
+  /** Paleta app (modo claro Figma) **/
+  --app-bg: #ffffff;
+  --app-text-primary: #000000;
+  --app-text-secondary: #6c6c6c;
+  --app-input-bg: #ffffff;
+  --app-input-border: #d4d4d4;
+  --app-button-bg: #e5eaf0;
+  --app-link: #1a1a1a;
 }
 
-/* Tema oscuro opcional */
+/* Tema oscuro general (para pantallas dark como Home con mapa) */
 @media (prefers-color-scheme: dark) {
   :root {
     --ion-background-color: #020617;

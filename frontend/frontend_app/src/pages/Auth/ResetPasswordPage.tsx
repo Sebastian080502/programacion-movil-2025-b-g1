@@ -1,49 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   IonPage,
   IonContent,
   IonButton,
 } from "@ionic/react";
-import { useHistory } from "react-router";
 import AppInput from "../../components/UI/AppInput";
-import { registerApi } from "../../api/auth.api"; // o tu servicio que llame /auth/register
+import { resetPasswordApi } from "../../api/auth.api";
 import { AxiosError } from "axios";
+import { useHistory, useLocation } from "react-router";
 
-const RegisterPage: React.FC = () => {
-  const history = useHistory();
-
+const ResetPasswordPage: React.FC = () => {
   const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
-  const onSubmit = async () => {
-    const pwd = password.trim();
-    const pwd2 = password2.trim();
+  const history = useHistory();
+  const location = useLocation();
 
-    if (!email || !pwd || !pwd2) {
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const emailParam = params.get("email");
+    if (emailParam) setEmail(emailParam);
+  }, [location.search]);
+
+  const onSubmit = async () => {
+    if (!email || !code || !password) {
       alert("Completa todos los campos");
       return;
     }
-
-    if (pwd !== pwd2) {
-      console.log("password:", JSON.stringify(pwd));
-      console.log("password2:", JSON.stringify(pwd2));
+    if (password !== password2) {
       alert("Las contraseñas no coinciden");
       return;
     }
 
     try {
-      await registerApi(email, pwd); // aquí llamas a tu endpoint /auth/register
-      alert("Usuario registrado correctamente. Ahora puedes iniciar sesión.");
+      await resetPasswordApi(email, code, password);
+      alert("Contraseña actualizada correctamente. Ahora puedes iniciar sesión.");
       history.push("/login");
     } catch (error) {
       const err = error as AxiosError<any>;
-      const raw =
+      const msg =
         err.response?.data?.message ||
         err.response?.data?.error ||
-        "Error al registrarse. Intenta con otro correo.";
-      const msg = Array.isArray(raw) ? raw.join("\n") : String(raw);
-      alert(msg);
+        "No pudimos actualizar la contraseña.";
+      alert(Array.isArray(msg) ? msg.join("\n") : String(msg));
       console.error(err.response?.data || err);
     }
   };
@@ -53,10 +54,8 @@ const RegisterPage: React.FC = () => {
       <IonContent className="login-light" fullscreen>
         <div className="login-wrapper">
           <header className="login-header">
-            <h1 className="login-title">Crear cuenta</h1>
-            <h2 className="login-subtitle">
-              Regístrate para comenzar a usar C10NA Movilidad.
-            </h2>
+            <h1 className="login-title">C10NA</h1>
+            <h2 className="login-subtitle">Restablecer contraseña</h2>
           </header>
 
           <section className="login-card">
@@ -65,17 +64,22 @@ const RegisterPage: React.FC = () => {
               type="email"
               value={email}
               onChange={setEmail}
-              placeholder="tucorreo@dominio.com"
+              placeholder="correoelectrónico@dominio.com"
             />
-
             <AppInput
-              label="Contraseña"
+              label="Código recibido"
+              type="text"
+              value={code}
+              onChange={setCode}
+              placeholder="Ingresa el código"
+            />
+            <AppInput
+              label="Nueva contraseña"
               type="password"
               value={password}
               onChange={setPassword}
               placeholder="********"
             />
-
             <AppInput
               label="Confirmar contraseña"
               type="password"
@@ -89,22 +93,8 @@ const RegisterPage: React.FC = () => {
               className="btn-login-light ion-margin-top"
               onClick={onSubmit}
             >
-              Registrarme
+              Cambiar contraseña
             </IonButton>
-
-            <p
-              className="login-register"
-              style={{ marginTop: 16 }}
-            >
-              Ya tengo cuenta,{" "}
-              <button
-                type="button"
-                className="link-button-strong"
-                onClick={() => history.push("/login")}
-              >
-                iniciar sesión
-              </button>
-            </p>
           </section>
         </div>
       </IonContent>
@@ -112,4 +102,4 @@ const RegisterPage: React.FC = () => {
   );
 };
 
-export default RegisterPage;
+export default ResetPasswordPage;

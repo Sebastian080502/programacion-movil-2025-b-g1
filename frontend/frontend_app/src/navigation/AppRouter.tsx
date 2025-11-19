@@ -16,6 +16,8 @@ import FeedbackFormPage from "../pages/Feedback/FeedbackFormPage";
 import ProfilePage from "../pages/Profile/ProfilePage";
 import NotFoundPage from "../pages/Errors/NotFoundPage";
 import RegisterPage from "../pages/Auth/RegisterPage";
+import ForgotPasswordPage from "../pages/Auth/ForgotPasswordPage";
+import ResetPasswordPage from "../pages/Auth/ResetPasswordPage";
 
 export const AppRouter: React.FC = () => {
   const { token } = useAuth();
@@ -25,13 +27,20 @@ export const AppRouter: React.FC = () => {
       <IonRouterOutlet>
         {/* Login */}
         <Route path="/login" exact>
-      {token ? <Redirect to="/home" /> : <LoginPage />}
-          </Route>
+          {token ? <Redirect to="/home" /> : <LoginPage />}
+        </Route>
+        <Route path="/forgot-password" exact>
+          {token ? <Redirect to="/home" /> : <ForgotPasswordPage />}
+        </Route>
 
-       {/* Register */}
-      <Route path="/register" exact>
-       {token ? <Redirect to="/home" /> : <RegisterPage />}
-          </Route>
+        <Route path="/reset-password" exact>
+          {token ? <Redirect to="/home" /> : <ResetPasswordPage />}
+        </Route>
+
+        {/* Register */}
+        <Route path="/register" exact>
+          {token ? <Redirect to="/home" /> : <RegisterPage />}
+        </Route>
 
         {/* Home */}
         <Route path="/home" exact>
