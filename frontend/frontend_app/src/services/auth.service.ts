@@ -9,7 +9,7 @@ export interface AuthResult {
 
 const mapResponse = (res: AuthApiResponse): AuthResult => {
   const token = res.access_token;
-  return { token, user: null }; // de momento no tenemos user en la respuesta
+  return { token, user: null };
 };
 
 export const authService = {

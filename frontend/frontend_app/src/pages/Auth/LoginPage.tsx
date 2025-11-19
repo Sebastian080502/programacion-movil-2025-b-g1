@@ -1,13 +1,5 @@
-// src/pages/Auth/LoginPage.tsx
 import React, { useState } from "react";
-import {
-  IonPage,
-  IonContent,
-  IonButton,
-  IonToggle,
-  IonRow,
-  IonCol,
-} from "@ionic/react";
+import {IonPage,IonContent,IonButton,IonToggle,IonRow,IonCol,} from "@ionic/react";
 import { useHistory } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import AppInput from "../../components/UI/AppInput";
@@ -30,7 +22,7 @@ const LoginPage: React.FC = () => {
     try {
       await login(email.trim(), password.trim());
 
-      // ✅ Después de un login exitoso navega al Home
+      // Después de un login exitoso navega al Home
       history.push("/home");
 
       // TODO: aquí podrías usar rememberMe para decidir

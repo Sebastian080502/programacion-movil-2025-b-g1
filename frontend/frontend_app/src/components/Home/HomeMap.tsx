@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-} from "@ionic/react";
+import {IonCard,IonCardHeader,IonCardTitle,IonCardSubtitle,} from "@ionic/react";
 
 const HomeMap: React.FC = () => {
   return (
@@ -15,7 +10,7 @@ const HomeMap: React.FC = () => {
       </IonCardHeader>
 
       <div className="home-map-container">
-        <span>🎯 Aquí irá el mapa interactivo de rutas</span>
+        <span> Aquí irá el mapa interactivo de rutas</span>
       </div>
     </IonCard>
   );

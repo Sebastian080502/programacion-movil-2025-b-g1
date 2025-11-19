@@ -1,12 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  IonPage,
-  IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonSearchbar,
-} from "@ionic/react";
+import {IonPage,IonContent,IonList,IonItem,IonLabel,IonSearchbar,} from "@ionic/react";
 import { AppContext } from "../../context/AppContext";
 import { getCities, City } from "../../api/city.api";
 import { useFetch } from "../../hooks/useFetch";

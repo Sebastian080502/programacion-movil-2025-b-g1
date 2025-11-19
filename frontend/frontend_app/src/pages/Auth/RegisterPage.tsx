@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import {
-  IonPage,
-  IonContent,
-  IonButton,
-} from "@ionic/react";
+import {IonPage,IonContent,IonButton,} from "@ionic/react";
 import { useHistory } from "react-router";
 import AppInput from "../../components/UI/AppInput";
-import { registerApi } from "../../api/auth.api"; // o tu servicio que llame /auth/register
+import { registerApi } from "../../api/auth.api"; 
 import { AxiosError } from "axios";
 
 const RegisterPage: React.FC = () => {
@@ -33,7 +29,7 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      await registerApi(email, pwd); // aquí llamas a tu endpoint /auth/register
+      await registerApi(email, pwd); 
       alert("Usuario registrado correctamente. Ahora puedes iniciar sesión.");
       history.push("/login");
     } catch (error) {

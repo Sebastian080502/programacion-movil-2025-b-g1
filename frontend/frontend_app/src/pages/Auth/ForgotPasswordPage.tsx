@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  IonPage,
-  IonContent,
-  IonButton,
-  IonText,
-} from "@ionic/react";
+import {IonPage,IonContent,IonButton,IonText,} from "@ionic/react";
 import AppInput from "../../components/UI/AppInput";
 import { requestPasswordResetApi } from "../../api/auth.api";
 import { AxiosError } from "axios";

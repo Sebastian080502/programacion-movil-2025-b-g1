@@ -1,6 +1,6 @@
 import { http } from "./http";
 
-// Lo que realmente devuelve tu backend Nest
+
 export interface AuthApiResponse {
   access_token: string;
 }
