@@ -13,6 +13,13 @@ const RegisterPage: React.FC = () => {
   const [password2, setPassword2] = useState("");
 
   const onSubmit = async () => {
+    console.log("onSubmit values:", {
+    email,
+    password,
+    password2,
+    pwd: password.trim(),
+    pwd2: password2.trim(),
+  });
     const pwd = password.trim();
     const pwd2 = password2.trim();
 

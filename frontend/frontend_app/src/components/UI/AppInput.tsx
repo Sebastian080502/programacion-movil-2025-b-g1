@@ -22,11 +22,15 @@ const AppInput: React.FC<Props> = ({
     <IonItem className="ion-margin-vertical">
       <IonLabel position="stacked">{label}</IonLabel>
       <IonInput
-        type={isPassword ? "password" : type}
-        value={value}
-        placeholder={placeholder}
-        onIonChange={(e) => onChange?.(e.detail.value || "")}
-      >
+  type={isPassword ? "password" : type}
+  value={value}
+  placeholder={placeholder}
+  onIonChange={(e) => {
+    const val = e.detail.value || "";
+    console.log("AppInput change:", label, "=>", val);
+    onChange?.(val);
+  }}
+>
         {isPassword && <IonInputPasswordToggle slot="end" />}
       </IonInput>
     </IonItem>

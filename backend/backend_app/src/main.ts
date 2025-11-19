@@ -16,11 +16,15 @@ async function bootstrap() {
 
 
   app.enableCors({
-    origin: '*',  
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: '*',
-
-  });
+  origin: ["http://localhost:8100", "https://mobility-frontend.onrender.com"],
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Accept",
+    "Origin",
+  ],
+});
 
   const port = process.env.PORT ? Number(process.env.PORT) : 3000;
   await app.listen(port);
