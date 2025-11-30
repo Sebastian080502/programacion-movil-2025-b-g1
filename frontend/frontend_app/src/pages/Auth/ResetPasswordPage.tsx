@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  IonPage,
-  IonContent,
-  IonButton,
-} from "@ionic/react";
+import {IonPage,IonContent,IonButton,} from "@ionic/react";
 import AppInput from "../../components/UI/AppInput";
 import { resetPasswordApi } from "../../api/auth.api";
 import { AxiosError } from "axios";

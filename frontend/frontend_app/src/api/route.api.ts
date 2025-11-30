@@ -1,4 +1,4 @@
-import { http } from "./http";
+import { httpGet } from "./http";
 
 export interface Route {
   id: string;
@@ -18,20 +18,17 @@ export interface Stop {
 }
 
 export const getRoutesByCity = async (cityId: string): Promise<Route[]> => {
-  const res = await http.get<Route[]>("/routes", {
+  return httpGet<Route[]>("/routes", {
     params: { cityId },
   });
-  return res.data;
 };
 
 export const getRouteById = async (routeId: string): Promise<Route> => {
-  const res = await http.get<Route>(`/routes/${routeId}`);
-  return res.data;
+  return httpGet<Route>(`/routes/${routeId}`);
 };
 
 export const getStopsByRoute = async (routeId: string): Promise<Stop[]> => {
-  const res = await http.get<Stop[]>("/stops", {
+  return httpGet<Stop[]>("/stops", {
     params: { routeId },
   });
-  return res.data;
 };

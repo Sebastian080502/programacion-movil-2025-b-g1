@@ -1,4 +1,4 @@
-import { http } from "./http";
+import { httpGet, httpPost } from "./http";
 
 export interface Feedback {
   id: string;
@@ -12,19 +12,17 @@ export interface Feedback {
 export const getFeedbackByRoute = async (
   routeId: string
 ): Promise<Feedback[]> => {
-  const res = await http.get<Feedback[]>("/feedback", {
+  return httpGet<Feedback[]>("/feedback", {
     params: { routeId },
   });
-  return res.data;
 };
 
 export const createFeedback = async (
   routeId: string,
   data: { title: string; body?: string }
 ): Promise<Feedback> => {
-  const res = await http.post<Feedback>("/feedback", {
+  return httpPost<Feedback>("/feedback", {
     routeId,
     ...data,
   });
-  return res.data;
 };

@@ -1,4 +1,4 @@
-import { http } from "./http";
+import { httpGet } from "./http";
 
 export interface City {
   id: string;
@@ -6,6 +6,5 @@ export interface City {
 }
 
 export const getCities = async (): Promise<City[]> => {
-  const res = await http.get<City[]>("/cities");
-  return res.data;
+  return httpGet<City[]>("/cities");
 };

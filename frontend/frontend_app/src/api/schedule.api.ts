@@ -1,4 +1,4 @@
-import { http } from "./http";
+import { httpGet } from "./http";
 
 export interface Schedule {
   id: string;
@@ -12,8 +12,7 @@ export interface Schedule {
 export const getSchedulesByRoute = async (
   routeId: string
 ): Promise<Schedule[]> => {
-  const res = await http.get<Schedule[]>("/schedules", {
+  return httpGet<Schedule[]>("/schedules", {
     params: { routeId },
   });
-  return res.data;
 };
