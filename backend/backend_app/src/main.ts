@@ -8,9 +8,9 @@ async function bootstrap() {
 
 app.enableCors({
   origin: [
-    'http://localhost:8100',     // navegador Ionic
+    'https://localhost:8100',     // navegador Ionic
     'capacitor://localhost',     // apps nativas
-    'http://localhost',          // fallback
+    'https://localhost',          // fallback
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   allowedHeaders:

@@ -7,7 +7,9 @@ import { JwtAuthGuard } from '../auth/jwt.guard';
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
-  constructor(private service: UsersService) {}
+  constructor(private service: UsersService) {
+    
+  }
 
   @Post() 
   create(@Body() dto: CreateUserDto) {
