@@ -4,21 +4,17 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
- const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);
 
-app.enableCors({
-  origin: [
-    'https://localhost:8100',     // navegador Ionic
-    'capacitor://localhost',     // apps nativas
-    'https://localhost',          // fallback
-  ],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders:
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-  credentials: true,
-});
+  // CORS PERMITIENDO LOCALHOST:8100
+  app.enableCors({
+    origin: ['http://localhost:8100'],  // <-- tu frontend
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders:
+      'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    credentials: false, 
+  });
 
-  
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -27,7 +23,7 @@ app.enableCors({
   );
 
   const port = process.env.PORT ? Number(process.env.PORT) : 3000;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 }
 
 bootstrap();
